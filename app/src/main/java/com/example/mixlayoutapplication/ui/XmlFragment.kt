@@ -2,12 +2,18 @@ package com.example.mixlayoutapplication.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mixlayoutapplication.MainViewModel
 import com.example.mixlayoutapplication.R
-import com.example.mixlayoutapplication.databinding.FragmentComposeBinding
 import com.example.mixlayoutapplication.databinding.FragmentXmlBinding
 import com.example.mixlayoutapplication.ui.theme.XmlItemAdapter
+import kotlinx.coroutines.launch
 
 class XmlFragment: Fragment(R.layout.fragment_xml) {
 
@@ -15,6 +21,8 @@ class XmlFragment: Fragment(R.layout.fragment_xml) {
     private val binding: FragmentXmlBinding get() = _binding!!
 
     private val adapter = XmlItemAdapter()
+
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     companion object {
         val TAG: String = "XmlFragment"
@@ -28,17 +36,22 @@ class XmlFragment: Fragment(R.layout.fragment_xml) {
         _binding = FragmentXmlBinding.bind(view)
 
         binding.btnXml.setOnClickListener {
-
+            Toast.makeText(requireContext(), "Button clicked", Toast.LENGTH_SHORT).show()
         }
 
         binding.ivXml.setOnClickListener {
-
+            Toast.makeText(requireContext(), "ImageView clicked", Toast.LENGTH_SHORT).show()
         }
 
-        binding.rvXml.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvXml.adapter = adapter
-        adapter.submitList(listOf("a","b","c","d","e","f","g","h","i","j","k","l","m","l","o",))
-
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mainViewModel.uiState.collect { uiState ->
+                    binding.rvXml.layoutManager = LinearLayoutManager(requireContext())
+                    adapter.submitList(uiState.nationalParks)
+                    binding.rvXml.adapter = adapter
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
