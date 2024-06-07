@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_xml"
+        android:icon="@drawable/baseline_architecture_24"
+        android:title="XML" />
 
     <item
         android:id="@+id/navigation_compose"
-        android:icon="@android:drawable/ic_menu_call"
+        android:icon="@drawable/baseline_auto_awesome_24"
         android:title="Compose" />
-
-    <item
-        android:id="@+id/navigation_xml"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="XML" />
 
 </menu>

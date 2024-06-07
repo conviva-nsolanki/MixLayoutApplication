@@ -2,7 +2,7 @@ package com.example.mixlayoutapplication.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.compose.material3.Text
+import androidx.compose.ui.Modifier
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.mixlayoutapplication.MainViewModel
@@ -27,8 +27,9 @@ class ComposeFragment: Fragment(R.layout.fragment_compose) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentComposeBinding.bind(view)
+        mainViewModel.loadNationalPark("AK")
         binding.composeView.setContent {
-            Text(text = "This is compose fragment")
+            ComposeContent(modifier = Modifier, viewModel = mainViewModel)
         }
     }
 

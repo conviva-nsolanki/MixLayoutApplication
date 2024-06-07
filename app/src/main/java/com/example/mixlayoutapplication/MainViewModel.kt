@@ -14,7 +14,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class UiState(
-    val nationalParks: List<NationalPark> = listOf()
+    val nationalParksCalifornia: List<NationalPark> = listOf(),
+    val nationalParksAlaska: List<NationalPark> = listOf()
 )
 @HiltViewModel
 class MainViewModel @Inject constructor(private val services: NationalParkServices): ViewModel() {
@@ -24,22 +25,24 @@ class MainViewModel @Inject constructor(private val services: NationalParkServic
     companion object {
         private const val TAG: String = "MainViewModel"
     }
-
-    init {
+    fun loadNationalPark(state: String = "CA") {
         viewModelScope.launch {
             try {
-
-                val nationalParks: List<NationalPark> = services.getNationalParkByStateCodes("CA")
+                val nationalParks: List<NationalPark> = services.getNationalParkByStateCodes(state)
                     .data.map {
                         it.toNationalPark()
                     }
                 _uiState.update {
-                    it.copy(
-                        nationalParks = nationalParks
-                    )
+                    if (state == "CA") {
+                        it.copy(
+                            nationalParksCalifornia = nationalParks
+                        )
+                    } else {
+                        it.copy(
+                            nationalParksAlaska = nationalParks
+                        )
+                    }
                 }
-
-
             } catch (e: Exception) {
                 e.localizedMessage?.let { Log.d(TAG, it) }?: Log.d(TAG, "Error: $e")
             }
