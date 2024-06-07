@@ -40,9 +40,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.conviva.apptracker.ConvivaAppAnalytics
 import com.example.mixlayoutapplication.MainViewModel
 import com.example.mixlayoutapplication.R
 import com.example.mixlayoutapplication.data.NationalPark
+import org.json.JSONObject
 
 @Composable
 fun ComposeContent(modifier: Modifier = Modifier, viewModel: MainViewModel) {
@@ -165,7 +167,14 @@ fun ParkContent(modifier: Modifier = Modifier, park: NationalPark, onClick: (Str
             modifier = modifier
                 .padding(start = 8.dp, end = 8.dp)
                 .width(150.dp),
-            onClick = { onClick("Visit ${park.name}") }) {
+            onClick = {
+                onClick("Visit ${park.name}")
+                ConvivaAppAnalytics
+                    .getDefaultTracker()
+                    ?.trackCustomEvent("button_click", JSONObject().also {
+                        it.put("Park name", park.name)
+                    })
+            }) {
             Text(text = "Visit")
         }
         Image(
@@ -173,7 +182,14 @@ fun ParkContent(modifier: Modifier = Modifier, park: NationalPark, onClick: (Str
                 .height(IntrinsicSize.Min) // Match height to Button
                 .width(IntrinsicSize.Min)
                 .padding(top = 8.dp, bottom = 8.dp, start = 4.dp, end = 4.dp)
-                .clickable { onClick("Navigate ${park.name}")}, // Maintain aspect ratio.clickable { println("nannandenden navigate clicked") },
+                .clickable {
+                    onClick("Navigate ${park.name}")
+                    ConvivaAppAnalytics
+                        .getDefaultTracker()
+                        ?.trackCustomEvent("imageview_click", JSONObject().also {
+                            it.put("Park name", park.name)
+                        })
+                },
             contentScale = ContentScale.Fit,
             painter = painterResource(R.drawable.baseline_assistant_navigation_24),
             contentDescription = "navigation"

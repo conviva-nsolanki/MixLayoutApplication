@@ -18,6 +18,7 @@ class XmlItemAdapter: ListAdapter<NationalPark, XmlItemAdapter.XmlItemViewHolder
             binding.tvTitle.text = parkInfo.name
             binding.tvDescription.text = parkInfo.description
             binding.ivPark.load(parkInfo.imageUrl)
+            binding.btnParkVisit.text = "Visit ${parkInfo.name}"
 
             binding.btnParkVisit.setOnClickListener {
                 Toast.makeText(binding.root.context, "Visit ${parkInfo.name}", Toast.LENGTH_SHORT).show()
