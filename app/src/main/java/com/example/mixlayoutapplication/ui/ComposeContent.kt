@@ -140,54 +140,45 @@ fun ParkList(modifier: Modifier = Modifier, parks: List<NationalPark>, onClick: 
 }
 
 @Composable
-fun ParkContent(modifier: Modifier = Modifier, park: NationalPark, onClick: (String) -> Unit) {
-    AsyncImage(
-        model = park.imageUrl,
-        contentDescription = "Park image", // Provide a meaningful description
-        modifier = modifier
-            .fillMaxWidth()
-            .height(250.dp),
-        contentScale = ContentScale.Crop // Adjust scaling as needed
-    )
-    Text(
-        modifier = modifier.padding(top = 0.dp, bottom = 0.dp),
-        text = park.name,
-        maxLines = 1,
-        style = MaterialTheme.typography.titleMedium
-    )
-    Text(
-        modifier = modifier.padding(top = 0.dp, bottom = 0.dp),
-        text = park.description,
-        maxLines = 7,
-        overflow = TextOverflow.Ellipsis,
-        style = MaterialTheme.typography.bodySmall
-    )
+fun ParkContent(
+    modifier: Modifier = Modifier,
+    park: NationalPark,
+    onClick: (String) -> Unit
+) {
+    ParkImage(modifier, park.imageUrl)
+    TitleText(modifier, park.name)
+    DescriptionText(modifier, park.description)
+    ParkActionRwoItems(modifier, park.name, onClick)
+}
+
+@Composable
+fun ParkActionRwoItems(modifier: Modifier, name: String, onClick: (String) -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Button(
             modifier = modifier
                 .padding(start = 8.dp, end = 8.dp)
                 .width(150.dp),
             onClick = {
-                onClick("Visit ${park.name}")
+                onClick("Visit ${name}")
                 ConvivaAppAnalytics
                     .getDefaultTracker()
                     ?.trackCustomEvent("button_click", JSONObject().also {
-                        it.put("Park name", park.name)
+                        it.put("Park name", name)
                     })
             }) {
             Text(text = "Visit")
         }
         Image(
-            modifier = Modifier
+            modifier = modifier
                 .height(IntrinsicSize.Min) // Match height to Button
                 .width(IntrinsicSize.Min)
                 .padding(top = 8.dp, bottom = 8.dp, start = 4.dp, end = 4.dp)
                 .clickable {
-                    onClick("Navigate ${park.name}")
+                    onClick("Navigate ${name}")
                     ConvivaAppAnalytics
                         .getDefaultTracker()
                         ?.trackCustomEvent("imageview_click", JSONObject().also {
-                            it.put("Park name", park.name)
+                            it.put("Park name", name)
                         })
                 },
             contentScale = ContentScale.Fit,
@@ -195,6 +186,39 @@ fun ParkContent(modifier: Modifier = Modifier, park: NationalPark, onClick: (Str
             contentDescription = "navigation"
         )
     }
+}
+
+@Composable
+fun DescriptionText(modifier: Modifier, description: String) {
+    Text(
+        modifier = modifier.padding(top = 0.dp, bottom = 0.dp),
+        text = description,
+        maxLines = 7,
+        overflow = TextOverflow.Ellipsis,
+        style = MaterialTheme.typography.bodySmall
+    )
+}
+
+@Composable
+fun TitleText(modifier: Modifier, name: String) {
+    Text(
+        modifier = modifier.padding(top = 0.dp, bottom = 0.dp),
+        text = name,
+        maxLines = 1,
+        style = MaterialTheme.typography.titleMedium
+    )
+}
+
+@Composable
+fun ParkImage(modifier: Modifier, imageUrl: String) {
+    AsyncImage(
+        model = imageUrl,
+        contentDescription = "Park image", // Provide a meaningful description
+        modifier = modifier
+            .fillMaxWidth()
+            .height(250.dp),
+        contentScale = ContentScale.Crop // Adjust scaling as needed
+    )
 }
 
 @Preview

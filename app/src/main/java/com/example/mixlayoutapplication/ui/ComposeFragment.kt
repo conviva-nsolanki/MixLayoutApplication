@@ -1,19 +1,16 @@
 package com.example.mixlayoutapplication.ui
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.mixlayoutapplication.MainViewModel
-import com.example.mixlayoutapplication.R
-import com.example.mixlayoutapplication.databinding.FragmentComposeBinding
 
-class ComposeFragment: Fragment(R.layout.fragment_compose) {
-
-    private var _binding: FragmentComposeBinding? = null
-    private val binding: FragmentComposeBinding
-        get() = _binding!!
+class ComposeFragment: Fragment() {
 
     private val mainViewModel: MainViewModel by activityViewModels()
 
@@ -24,17 +21,21 @@ class ComposeFragment: Fragment(R.layout.fragment_compose) {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentComposeBinding.bind(view)
-        mainViewModel.loadNationalPark("AK")
-        binding.composeView.setContent {
-            ComposeContent(modifier = Modifier, viewModel = mainViewModel)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                ComposeContent(modifier = Modifier, viewModel = mainViewModel)
+            }
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mainViewModel.loadNationalPark("AK")
     }
+
 }
