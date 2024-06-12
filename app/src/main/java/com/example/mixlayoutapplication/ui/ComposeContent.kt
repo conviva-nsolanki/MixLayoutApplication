@@ -100,8 +100,8 @@ fun TopSnackbarContainer(
 fun NationalParkList(
     modifier: Modifier = Modifier,
     padding: PaddingValues,
-    nationalParks: List<NationalPark>,
-    onClick: (String) -> Unit,
+    nationalParks: List<NationalPark> = emptyList(),
+    onClick: (String) -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -115,15 +115,20 @@ fun NationalParkList(
 }
 
 @Composable
-fun ParkTitle(modifier: Modifier = Modifier) {
+fun ParkTitle(modifier: Modifier = Modifier, name: String = "Alaska National Parks") {
     Text(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp),
-        text = "Alaska National Parks",
+        text = name,
         style = MaterialTheme.typography.titleLarge,
         textAlign = TextAlign.Center
     )
+}
+@Preview
+@Composable
+fun ParkTitlePreview() {
+    ParkTitle(name = "Colorado National Park")
 }
 
 @Composable
@@ -143,17 +148,30 @@ fun ParkList(modifier: Modifier = Modifier, parks: List<NationalPark>, onClick: 
 fun ParkContent(
     modifier: Modifier = Modifier,
     park: NationalPark,
-    onClick: (String) -> Unit
+    onClick: (String) -> Unit = {}
 ) {
-    ParkImage(modifier, park.imageUrl)
-    TitleText(modifier, park.name)
-    DescriptionText(modifier, park.description)
-    ParkActionRwoItems(modifier, park.name, onClick)
+    Column(modifier) {
+        ParkImage(modifier, park.imageUrl)
+        TitleText(modifier, park.name)
+        DescriptionText(modifier, park.description)
+        ParkActionRwoItems(modifier, park.name, onClick)
+    }
+}
+@Preview
+@Composable
+fun ParkContentPreview() {
+    ParkContent(park = NationalPark(
+        url = "",
+        name = "Yellow Stone",
+        description = "Largest National Park in US.",
+        imageUrl = ""
+    ))
 }
 
 @Composable
 fun ParkActionRwoItems(modifier: Modifier, name: String, onClick: (String) -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically) {
+        // Visit park button
         Button(
             modifier = modifier
                 .padding(start = 8.dp, end = 8.dp)
@@ -168,6 +186,7 @@ fun ParkActionRwoItems(modifier: Modifier, name: String, onClick: (String) -> Un
             }) {
             Text(text = "Visit")
         }
+        // Navigation Image
         Image(
             modifier = modifier
                 .height(IntrinsicSize.Min) // Match height to Button
@@ -221,8 +240,3 @@ fun ParkImage(modifier: Modifier, imageUrl: String) {
     )
 }
 
-@Preview
-@Composable
-fun ParkTitlePreview() {
-    ParkTitle(Modifier)
-}
