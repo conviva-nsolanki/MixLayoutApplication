@@ -7,20 +7,15 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.conviva.apptracker.ConvivaAppAnalytics
-import com.conviva.apptracker.controller.TrackerController
 import com.example.mixlayoutapplication.databinding.ActivityMainBinding
-import com.example.mixlayoutapplication.ui.ComposeFragment
-import com.example.mixlayoutapplication.ui.XmlFragment
 import com.example.mixlayoutapplication.util.APP_NAME
 import com.example.mixlayoutapplication.util.CUATOMER_KEY
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    @Inject lateinit var tracker: TrackerController
 
     private val viewModel: MainViewModel by viewModels()
 
