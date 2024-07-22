@@ -7,6 +7,6 @@ plugins {
 
 buildscript {
     dependencies {
-        classpath("com.conviva.sdk:android-plugin:0.3.3")
+        classpath("com.conviva.sdk:android-plugin:0.3.5")
     }
 }

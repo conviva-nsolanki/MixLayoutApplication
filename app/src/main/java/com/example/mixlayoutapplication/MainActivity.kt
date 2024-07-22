@@ -7,9 +7,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.conviva.apptracker.ConvivaAppAnalytics
+import com.conviva.apptracker.configuration.TrackerConfiguration
+import com.conviva.apptracker.tracker.LogLevel
 import com.example.mixlayoutapplication.databinding.ActivityMainBinding
 import com.example.mixlayoutapplication.util.APP_NAME
 import com.example.mixlayoutapplication.util.CUATOMER_KEY
+import com.example.mixlayoutapplication.util.USER_ID
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -62,14 +65,18 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun initializeConvivaTracker(context: Context) {
+        val configuration = TrackerConfiguration(APP_NAME)
+        configuration.setLogLevel(LogLevel.DEBUG)
+
         ConvivaAppAnalytics.createTracker(
             context,
             CUATOMER_KEY,
-            APP_NAME
-        ).also {
-            it?.let { tracker ->
-                ConvivaAppAnalytics.setTrackerAsDefault(tracker)
-            }
+            APP_NAME,
+            configuration
+        )?.also { tracker ->
+            ConvivaAppAnalytics.setTrackerAsDefault(tracker)
         }
+
+        ConvivaAppAnalytics.getDefaultTracker()?.subject?.userId = USER_ID
     }
 }

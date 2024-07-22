@@ -48,11 +48,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.conviva.apptracker.ConvivaAppAnalytics
 import com.example.mixlayoutapplication.MainViewModel
 import com.example.mixlayoutapplication.R
 import com.example.mixlayoutapplication.data.NationalPark
-import org.json.JSONObject
 
 @Composable
 fun ComposeContent(modifier: Modifier = Modifier, viewModel: MainViewModel) {
@@ -196,7 +194,7 @@ fun ParkActionRwoItems(modifier: Modifier, name: String, onClick: (String) -> Un
                 .height(IntrinsicSize.Min) // Match height to Button
                 .width(IntrinsicSize.Min)
                 .padding(top = 8.dp, bottom = 8.dp, start = 4.dp, end = 4.dp)
-                .logEventClickable(name) {
+                .clickable {
                     onClick("Navigate ${name}")
                 },
             contentScale = ContentScale.Fit,
@@ -256,11 +254,11 @@ fun Modifier.logEventClickable(
     role,
     onClick = {
         // Log event
-        ConvivaAppAnalytics
-            .getDefaultTracker()
-            ?.trackCustomEvent("button_click", JSONObject().also {
-                it.put("Park name", eventValue)
-            })
+//        ConvivaAppAnalytics
+//            .getDefaultTracker()
+//            ?.trackCustomEvent("button_click", JSONObject().also {
+//                it.put("Park name", eventValue)
+//            })
         onClick.invoke()
     }
 )
@@ -286,11 +284,11 @@ fun LogAnalyticsButton(
     Button(
         onClick = {
             // Log event
-            ConvivaAppAnalytics
-                .getDefaultTracker()
-                ?.trackCustomEvent("button_click", JSONObject().also {
-                    it.put("Park name", eventValue)
-                })
+//            ConvivaAppAnalytics
+//                .getDefaultTracker()
+//                ?.trackCustomEvent("button_click", JSONObject().also {
+//                    it.put("Park name", eventValue)
+//                })
             onClick.invoke()
         },
         modifier,
