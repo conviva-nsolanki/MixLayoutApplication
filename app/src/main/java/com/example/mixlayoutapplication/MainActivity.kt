@@ -77,6 +77,6 @@ class MainActivity : FragmentActivity() {
             ConvivaAppAnalytics.setTrackerAsDefault(tracker)
         }
 
-        ConvivaAppAnalytics.getDefaultTracker()?.subject?.userId = USER_ID
+        ConvivaAppAnalytics.getTracker()?.subject?.userId = USER_ID
     }
 }
